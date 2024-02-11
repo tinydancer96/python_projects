@@ -5,7 +5,7 @@ from . import views
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path("<str:entry>", views.entry, name="entry"),
+    path("encyclopedia/<str:entry>", views.entry, name="entry"),
     path("query/", views.query, name="query"),
-    path("encyclopedia/new_entry", views.new_entry, name="new_entry")
+    path("new_entry", views.new_entry, name="new_entry")
 ]

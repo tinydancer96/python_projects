@@ -1,14 +1,20 @@
 from django.shortcuts import render, redirect
 from . import util
 from django import forms
+from django.urls import reverse
 
 class NewEntryForm(forms.Form):
     title = forms.CharField(label="Title")
     content = forms.CharField(label="Content")
 
 def index(request):
+    entries = util.list_entries()
+    entry_contents = {}
+    for entry in entries:
+        entry_contents[entry] = util.get_entry(entry)
+
     return render(request, "encyclopedia/index.html", {
-        "entries": util.list_entries()
+        "entries": entry_contents
     })
 
 def entry(request, entry):
@@ -34,9 +40,11 @@ def new_entry(request):
             content = new_entry.cleaned_data['content']
             existing_entry = util.get_entry(title)
             if existing_entry is not None:
+                entry_url = reverse('entry', kwargs={'entry': title})
                 return render(request, "encyclopedia/error.html", {
-                    "error_message": f"This page already exists. Please update { title }",
-                    "title_link": title
+                    "error_message": f"This page already exists. Please update ",
+                    "existing_entry_url": entry_url,
+                    "existing_entry_title": title
                 })
             else:
                 util.save_entry(title, content)

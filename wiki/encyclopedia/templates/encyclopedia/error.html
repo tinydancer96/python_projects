@@ -1,5 +1,5 @@
 {% extends "encyclopedia/layout.html" %}
 
 {% block body %}
-{{ error_message }} <a href="{% url 'entry' existing_entry %}">here</a>
+{{ error_message }} <a href="{{ existing_entry_url }}">{{ existing_entry_title }}</a>
 {% endblock %}
