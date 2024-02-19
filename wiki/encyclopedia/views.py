@@ -7,6 +7,10 @@ class NewEntryForm(forms.Form):
     title = forms.CharField(label="Title")
     content = forms.CharField(label="Content")
 
+class EditEntryForm(forms.Form):
+    title = forms.CharField(label="Title", disabled=True)
+    content = forms.CharField(label="Content")
+
 def index(request):
     entries = util.list_entries()
     entry_contents = {}
@@ -52,4 +56,28 @@ def new_entry(request):
     else:
         return render(request, "encyclopedia/new_entry.html",{
         "new_entry": NewEntryForm()
+        })
+
+# def edit(request, entry):
+#     entry_content = util.get_entry(entry)
+#     if request.method == "POST":
+#         edit_entry = EditEntryForm(request.POST)
+#         if edit_entry.is_valid():
+#             util.save_entry(entry, edit_entry.cleaned_data['content'])
+#             return redirect("entry", entry=entry.lower())
+#         else:
+#             return render(request, "encyclopedia/edit.html", {
+#                 "edit_entry": EditEntryForm(initial={'title': entry, 'content': "Invalid content"})
+#             })
+#     else:
+#         return render(request, "encyclopedia/edit.html", {
+#         "edit_entry": EditEntryForm(initial={'title': entry, 'content': entry_content}),
+#         "entry_title": entry
+#         })
+
+def edit(request, entry):
+    entry_content = util.get_entry(entry)
+    return render(request, "encyclopedia/edit.html", {
+        "edit_entry": EditEntryForm(initial={'title': entry, 'content': entry_content}),
+        "entry_title": entry
         })
