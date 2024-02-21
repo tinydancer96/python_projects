@@ -8,6 +8,11 @@
   <h1>{{ entry_title}}</h1>
   {{ entry_content }}
   <br>
-  <a href="{% url 'edit' entry=entry_title %}">Edit Page</a>
+  <form action="{% url 'edit' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="title" value="{{entry_title}}">
+    <input type="hidden" name="content" value="{{entry_content}}">
+    <input type="submit" value="Edit">
+  </form>
 
 {% endblock %}
