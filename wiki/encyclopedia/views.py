@@ -31,3 +31,18 @@ def entry(request, entry):
 
 def error(request):
     return render(request, "encyclopedia/error.html")
+
+
+def new_entry(request):
+    if request.method == "POST":
+        title = request.POST['title']
+        content = request.POST['content']
+        util.save_entry(title, content)
+        return render(request, "encyclopedia/entry.html", {
+            "title": title,
+            "content": content
+        })
+    return render(request, "encyclopedia/new_entry.html")
+
+
+# def update(request, entry):

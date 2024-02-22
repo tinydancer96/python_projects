@@ -2,12 +2,15 @@
 
 {% block title %}
 
-  <h1>{{ title }}</h1>
+  <h1>{{ entry }}</h1>
 
 {% endblock %}
 
 {% block body %}
-
+  <h1>{{ entry }}</h1>
   <p>{{ content | safe }}</p>
+  <br>
+  <!-- <form action="{% url 'edit' entry=entry}">
 
+  </form> -->
 {% endblock %}
