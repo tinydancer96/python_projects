@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from . import util
+
 
 import markdown
 
@@ -44,5 +45,16 @@ def new_entry(request):
         })
     return render(request, "encyclopedia/new_entry.html")
 
+def search(request):
+    if request.method == "POST":
+        search = request.POST.get('q')
+        entry = util.get_entry(search)
+        if entry == None:
+            return render(request, "encyclopedia/error.html", {
+                "message": f"'{search}' does not exist"
+            })
+        else:
+            return redirect("entry", entry=search)
 
-# def update(request, entry):
+
+# def edit(request, entry):

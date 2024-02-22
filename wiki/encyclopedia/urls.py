@@ -6,6 +6,7 @@ urlpatterns = [
     path("", views.index, name="index"),
     path("entry/<str:entry>", views.entry, name="entry"),
     path("error/", views.error, name="error"),
-    path("new_entry", views.new_entry, name="new_entry")
-    # path("update/<str:entry>", views.update, name="update")
+    path("new_entry", views.new_entry, name="new_entry"),
+    path("search", views.search, name="search")
+    # path("edit/<str:entry>", views.update, name="update")
 ]
