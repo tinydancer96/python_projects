@@ -12,14 +12,14 @@
         <div class="row">
             <div class="sidebar col-lg-2 col-md-3">
                 <h2>Wiki</h2>
-                <form action="{% url 'query' %}" method="GET">
-                  <input class="search" type="text" name="query" placeholder="Search Encyclopedia" value="{{ request.GET.query }}">
+                <form>
+                    <input class="search" type="text" name="q" placeholder="Search Encyclopedia">
                 </form>
                 <div>
                     <a href="{% url 'index' %}">Home</a>
                 </div>
                 <div>
-                    <a href="{% url 'new_entry' %}">Create New Page</a>
+                    Create New Page
                 </div>
                 <div>
                     Random Page

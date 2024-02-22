@@ -1,1 +1,0 @@
-An OOP language used mainly for web development
