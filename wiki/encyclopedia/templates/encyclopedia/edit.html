@@ -4,7 +4,8 @@
 
   <h1>Edit {{ entry }}</h1>
 
-  <form action="url 'save_edit' entry={{entry}}" method="post">
+  <form action="{% url 'save_edit' entry=entry %}" method="post">
+    {% csrf_token %}
     <input type="text" value="{{ entry }}" name="title">
     <br>
     <br>
