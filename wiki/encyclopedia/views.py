@@ -57,4 +57,16 @@ def search(request):
             return redirect("entry", entry=search)
 
 
-# def edit(request, entry):
+def edit(request, entry):
+    content = util.get_entry(entry)
+    if request.method == "POST":
+        return render(request, "encyclopedia/edit.html", {
+            "entry": entry,
+            "content": content
+        })
+
+def save_edit(request, entry):
+    content = request.POST.get('content')
+    if request.method == "POST":
+        util.save_entry(entry, content)
+        return redirect("entry", entry=entry)

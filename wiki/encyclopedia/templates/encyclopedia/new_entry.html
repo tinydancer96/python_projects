@@ -7,7 +7,10 @@
   <form action="{% url 'new_entry' %}" method="post">
     {% csrf_token %}
     <input type="text" placeholder="Title" name="title">
-    <input type="text" placeholder="Content" name="content">
+    <br>
+    <br>
+    <textarea type="text" placeholder="Content" name="content"></textarea>
+    <br>
     <input type="submit">
   </form>
 

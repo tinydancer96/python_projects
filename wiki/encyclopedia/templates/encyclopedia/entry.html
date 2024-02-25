@@ -9,7 +9,11 @@
 {% block body %}
   <p>{{ content | safe }}</p>
   <br>
-  <!-- <form action="{% url 'edit' entry=entry}">
+  <form action="{% url 'edit' entry=entry %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="title" value="{{ entry }}">
+    <input type="hidden" name="content" value="{{ content }}">
+    <input type="submit" value="Edit">
+  </form>
 
-  </form> -->
 {% endblock %}
