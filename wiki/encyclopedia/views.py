@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 
 from . import util
 
+import random
 
 import markdown
 
@@ -70,3 +71,9 @@ def save_edit(request, entry):
     if request.method == "POST":
         util.save_entry(entry, content)
         return redirect("entry", entry=entry)
+
+
+def random_entry(request):
+    list_entries = util.list_entries()
+    random_entry = random.choice(list_entries)
+    return redirect("entry", entry=random_entry)
