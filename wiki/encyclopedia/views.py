@@ -39,11 +39,13 @@ def new_entry(request):
     if request.method == "POST":
         title = request.POST['title']
         content = request.POST['content']
-        util.save_entry(title, content)
-        return render(request, "encyclopedia/entry.html", {
-            "title": title,
-            "content": content
-        })
+        if util.get_entry(title) == None:
+            util.save_entry(title, content)
+            return redirect("entry", entry=title)
+        else:
+            return render(request, "encyclopedia/error.html", {
+                "message": f"This page exists. Please update {title}"
+            })
     return render(request, "encyclopedia/new_entry.html")
 
 def search(request):
@@ -65,6 +67,7 @@ def edit(request, entry):
             "entry": entry,
             "content": content
         })
+
 
 def save_edit(request, entry):
     content = request.POST.get('content')
