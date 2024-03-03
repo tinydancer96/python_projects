@@ -17,7 +17,8 @@ def flight(request, flight_id):
             "message": f"Flight {flight_id} does not exist",
         })
     return render(request, "flights/flight.html", {
-        "flight": flight
+        "flight": flight,
+        "passengers": flight.passengers.all()
     })
 
 def error(request):
