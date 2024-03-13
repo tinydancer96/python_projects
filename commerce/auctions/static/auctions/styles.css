@@ -3,11 +3,18 @@ body {
 }
 
 .img-box {
-  height: 30vh;
-  width: 30vh;
+  height: 30%;
+  width: 30%;
 
   img {
     max-width: 100%;
     height: auto;
   }
+}
+
+.listing-box {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

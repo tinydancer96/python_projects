@@ -7,6 +7,9 @@
       <div>
         <h3>{{ listing.title }}</h3>
         <p>{{ listing.description }}</p>
+        <div class="img-box">
+          <img src="{{ listing.image }}" alt="{{ listing.title }}">
+        </div>
       </div>
     </a>
   {% endfor %}

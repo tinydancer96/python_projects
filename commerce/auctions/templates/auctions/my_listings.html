@@ -5,10 +5,17 @@
 {{ message }}
 {% for listing in listings %}
     <a href="{% url 'view_listing' listing.id %}">
-      <div>
-        <h3>{{ listing.title }}</h3>
-        <p>{{ listing.description }}</p>
-        <p>{{ listing.active }}</p>
+      <div class="listing-box">
+        <div>
+          <h3>{{ listing.title }}</h3>
+          <p>{{ listing.description }}</p>
+          <p>{{ listing.active }}</p>
+        </div>
+        {% if listing.image %}
+          <div class="img-box">
+            <img src="{{ listing.image }}" alt="{{ listing.title }}">
+          </div>
+        {% endif %}
       </div>
     </a>
 {% endfor %}

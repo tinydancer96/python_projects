@@ -98,7 +98,6 @@ def create(request):
         image = request.POST.get('image')
         try:
             category, created = Category.objects.get_or_create(title=category_name)
-            category_id = category.pk
             user = request.user
 
             listing = Listing.objects.create(
