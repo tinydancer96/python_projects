@@ -93,19 +93,28 @@ def create(request):
     if request.method == 'POST':
         title = request.POST.get('title')
         description = request.POST.get('description')
-        category = request.POST.get('category')
+        category_name = request.POST.get('category')
         price = request.POST.get('price')
         try:
-            listing = Listing.objects.create(title=title, description=description, price=price)
-            category, created = Category.objects.get_or_create(title=category)
-            if created:
-                listing.categories.add(category)
-            listing.user.add(request.user)
+            category, created = Category.objects.get_or_create(title=category_name)
+            category_id = category.pk
+            user = request.user
+
+            listing = Listing.objects.create(
+                title=title,
+                description=description,
+                price=price,
+                user=user,
+                categories=category
+            )
+            # listing.categories.add(category.title)
+
             return redirect("view_listing", listing_id=listing.id)
         except Exception as e:
             return render(request, "auctions/new_listing.html", {"error_message": str(e)})
     else:
         return render(request, "auctions/new_listing.html")
+
 
 def categories(request):
     all_categories = Category.objects.all()
