@@ -1,3 +1,13 @@
 body {
     padding: 10px;
 }
+
+.img-box {
+  height: 30vh;
+  width: 30vh;
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
