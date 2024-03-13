@@ -122,8 +122,8 @@ def categories(request):
         "list_categories": all_categories
     })
 
-def view_category(request, category_name):
-    category = Category.objects.get(title=category_name)
+def view_category(request, category_id):
+    category = Category.objects.get(id=category_id)
     listings = category.listings.all()
     return render(request, "auctions/view_category.html", {
         "category": category,

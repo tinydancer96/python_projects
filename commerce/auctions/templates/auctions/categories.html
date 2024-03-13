@@ -3,10 +3,10 @@
 {% block body %}
   <h1>Categories</h1>
 
-  <!-- {% for category in list_categories %}
-    <div>
-      <a href="{% url 'view_category' category.title %}">{{ category }}</a>
-      <li>{{ category }}</li>
-    </div>
-  {% endfor %} -->
+  {% for category in list_categories %}
+  <div>
+    <a href="{% url 'view_category' category.id %}">{{ category }}</a>
+  </div>
+{% endfor %}
+
 {% endblock %}
