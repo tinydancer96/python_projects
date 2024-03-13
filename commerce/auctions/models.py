@@ -8,12 +8,17 @@ class User(AbstractUser):
 
 
 class Listing(models.Model):
+    class ListingStatus(models.TextChoices):
+        ACTIVE = 'Active', 'Active'
+        CLOSED = 'Closed', 'Closed'
+
     title = models.TextField()
     description = models.TextField()
     categories = models.ForeignKey('Category', related_name='listings', on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=1000, decimal_places=2)
     user = models.ForeignKey(User, related_name='listings', on_delete=models.CASCADE)
     image = models.TextField(blank=True)
+    active = models.CharField(max_length=10, choices=ListingStatus.choices, default=ListingStatus.ACTIVE)
     def __str__(self):
         return f"{self.title}"
 
