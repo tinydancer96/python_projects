@@ -95,6 +95,7 @@ def create(request):
         description = request.POST.get('description')
         category_name = request.POST.get('category')
         price = request.POST.get('price')
+        image = request.POST.get('image')
         try:
             category, created = Category.objects.get_or_create(title=category_name)
             category_id = category.pk
@@ -105,6 +106,7 @@ def create(request):
                 description=description,
                 price=price,
                 user=user,
+                image=image,
                 categories=category
             )
             # listing.categories.add(category.title)
