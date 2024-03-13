@@ -6,17 +6,28 @@ from django.urls import reverse
 
 from .models import User, Listing, Category
 
-
 def index(request):
+    listings = Listing.objects.all()
+    return render(request, "auctions/index.html", {
+        "listings":  listings
+        })
+
+
+def my_listings(request):
     try:
         user = request.user
         listings = Listing.objects.filter(user=user)
     except:
         return render(request, "auctions/index.html")
-    return render(request, "auctions/index.html", {
-        "listings":  listings
-        })
 
+    if listings is not None:
+        return render(request, "auctions/my_listings.html", {
+        "listings": listings
+        })
+    else:
+        return render(request, "auctions/my_listings.html", {
+        "message": "No listings available"
+        })
 
 def login_view(request):
     if request.method == "POST":
@@ -74,3 +85,6 @@ def view_listing(request, listing_id):
     return render(request, ("auctions/view_listing.html"), {
         "listing": listing
     })
+
+def new_listing(request):
+    return render(request, "auctions/new_listing.html")
