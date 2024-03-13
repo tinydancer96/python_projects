@@ -114,7 +114,9 @@ def categories(request):
     })
 
 def view_category(request, category_name):
-    category = Category.objects.filter(title=category_name)
+    category = Category.objects.get(title=category_name)
+    listings = category.listings.all()
     return render(request, "auctions/view_category.html", {
-        "category": category_name
+        "category": category,
+        "listings": listings
     })
