@@ -106,3 +106,15 @@ def create(request):
             return render(request, "auctions/new_listing.html", {"error_message": str(e)})
     else:
         return render(request, "auctions/new_listing.html")
+
+def categories(request):
+    all_categories = Category.objects.all()
+    return render(request, "auctions/categories.html", {
+        "list_categories": all_categories
+    })
+
+def view_category(request, category_name):
+    category = Category.objects.filter(title=category_name)
+    return render(request, "auctions/view_category.html", {
+        "category": category_name
+    })
