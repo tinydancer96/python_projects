@@ -174,3 +174,13 @@ def add_comment(request):
         else:
             return redirect("login")
     return render(request, "auctions/view_listing.html")
+
+def make_bid(request):
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            listing_id = request.POST.get(listing_id)
+            user_id = request.POST.get(user_id)
+
+            user = User.objects.get(pk=user_id)
+            listing = Listing.objects.get(pk=listing_id)
+            bid = Bids.objects.create()
