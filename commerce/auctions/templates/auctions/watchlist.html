@@ -2,6 +2,7 @@
 
 {% block body %}
   <h1>Your Watchlist</h1>
+  {{ message }}
   {% for watchlist_item in watchlist_index %}
     {% if watchlist_item.listing.active == "Active" %}
       <div class="listing-box">

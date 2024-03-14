@@ -140,13 +140,15 @@ def create_watchlist(request):
         listing = Listing.objects.get(id=listing_id)
 
         watchlist, create = Watchlist.objects.get_or_create(user=user, listing=listing)
-        if watchlist:
-            # add error message to say listing is already in watchlist
-            pass
+        if not create:
+            message = f"{listing.title} is already in watchlist"
+            return redirect(reverse("watchlist") + f"?message={message}")
         return redirect("watchlist")
 
 def watchlist(request):
+    message = request.GET.get('message', None)
     watchlist_index = Watchlist.objects.filter(user=request.user.id)
     return render(request, "auctions/watchlist.html", {
-        "watchlist_index": watchlist_index
+        "watchlist_index": watchlist_index,
+        "message": message
     })
