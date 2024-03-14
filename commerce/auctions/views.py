@@ -83,10 +83,12 @@ def register(request):
 def view_listing(request, listing_id):
     listing = Listing.objects.get(pk=listing_id)
     comments = Comments.objects.filter(listing=listing)
+    message = request.GET.get('message', None)
     return render(request, ("auctions/view_listing.html"), {
         "listing": listing,
         "user": request.user,
-        "comments": comments
+        "comments": comments,
+        "message": message
     })
 
 def new_listing(request):
@@ -178,9 +180,36 @@ def add_comment(request):
 def make_bid(request):
     if request.method == 'POST':
         if request.user.is_authenticated:
-            listing_id = request.POST.get(listing_id)
-            user_id = request.POST.get(user_id)
+            listing_id = request.POST.get('listing_id')
+            user_id = request.POST.get('user_id')
+            price = request.POST.get('price')
 
             user = User.objects.get(pk=user_id)
             listing = Listing.objects.get(pk=listing_id)
-            bid = Bids.objects.create()
+            if float(listing.price) < float(price):
+                bid = Bids.objects.create(price=price, user=user, listing=listing)
+                listing.price = bid.price
+                listing.save()
+                message = "Bid Successful"
+                return redirect(reverse("view_listing", kwargs={"listing_id":listing_id}) + f"?message={message}")
+            else:
+                message = "New bid must be greater than current bid"
+                return redirect(reverse("view_listing", kwargs={"listing_id":listing_id}) + f"?message={message}")
+        else:
+            return redirect("login")
+    return render(request, "auctions/view_listing.html")
+
+
+def close_bid(request):
+    if request.method == 'POST':
+        listing_id = request.POST.get('listing_id')
+        user_id = request.POST.get('user_id')
+
+        listing = Listing.objects.get(pk=listing_id)
+        listing_user = listing.user
+        user = User.objects.get(pk=user_id)
+        if listing_user == user:
+            listing.active = 'Closed'
+            listing.save()
+            return redirect(reverse("view_listing", kwargs={"listing_id":listing_id}))
+    return render(request, "auctions/view_listing.html")

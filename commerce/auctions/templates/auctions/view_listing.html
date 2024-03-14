@@ -10,16 +10,35 @@
       <img src="{{ listing.image }}" alt="{{ listing.title }}">
     </div>
   {% endif %}
+  <p>Status: {{ listing.active }}</p>
 
     {% if listing.user == user %}
-      <p>close bid</p>
-    {% else %}
-      <form action="{% url 'create_watchlist' %}" method="post">
+      <form action="{% url 'close_bid' %}" method="post">
         {% csrf_token %}
-        <input type="hidden" value="{{ user.id }}" name="user">
-        <input type="hidden" value="{{ listing.id }}" name="listing">
-        <input type="submit" value="Add to Watchlist">
+        <input type="hidden" value="{{ listing.id}}" name="listing_id">
+        <input type="hidden" value="{{ user.id }}" name="user_id">
+        <input type="submit" value="Close Bid">
       </form>
+    {% else %}
+      <br>
+      {% if listing.active == 'Active' %}
+        <form action="{% url 'make_bid' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" value="{{ user.id }}" name="user_id">
+          <input type="hidden" value="{{ listing.id }}" name="listing_id">
+          <input type="number" name="price">
+          <input type="submit" value="Place Bid">
+        </form>
+        {{ message }}
+        <br>
+        <br>
+        <form action="{% url 'create_watchlist' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" value="{{ user.id }}" name="user">
+          <input type="hidden" value="{{ listing.id }}" name="listing">
+          <input type="submit" value="Add to Watchlist">
+        </form>
+      {% endif %}
       <br>
 
       <div>
