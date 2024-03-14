@@ -2,4 +2,20 @@
 
 {% block body %}
   <h1>Your Watchlist</h1>
+  {% for watchlist_item in watchlist_index %}
+    {% if watchlist_item.listing.active == "Active" %}
+      <div class="listing-box">
+        <div>
+          <h3>{{ watchlist_item.listing.title }}</h3>
+          <p>{{ watchlist_item.listing.description }}</p>
+          <p>{{ watchlist_item.listing.price }}</p>
+        </div>
+        {% if watchlist_item.listing.image %}
+          <div class="img-box">
+            <img src="{{ watchlist_item.listing.image }}" alt="{{ watchlist_item.listing.title }}">
+          </div>
+        {% endif %}
+    {% endif %}
+    </div>
+  {% endfor %}
 {% endblock %}

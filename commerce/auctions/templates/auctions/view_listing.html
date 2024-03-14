@@ -17,9 +17,6 @@
       <p>delete</p>
       <p>close bid</p>
     {% else %}
-      listing user id: {{listing.user.id}} ({{listing.user}})
-      listing id:{{listing.id}}
-      user logged in: {{ user }}
       <form action="{% url 'create_watchlist' %}" method="post">
         {% csrf_token %}
         <input type="hidden" value="{{ user.id }}" name="user">

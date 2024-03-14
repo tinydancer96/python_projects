@@ -109,7 +109,6 @@ def create(request):
                 image=image,
                 categories=category
             )
-            # listing.categories.add(category.title)
 
             return redirect("view_listing", listing_id=listing.id)
         except Exception as e:
@@ -134,10 +133,17 @@ def view_category(request, category_id):
 
 def create_watchlist(request):
     if request.method == 'POST':
-        user = User.objects.get(request.POST.get('user'))
-        listing = Listing.objects.get(request.POST.get('listing'))
-        watchlist = Watchlist.objects.create(user=user, listing=listing)
-        return render(request, "auctions/watchlist.html")
+        user_id = request.POST.get('user')
+        listing_id = request.POST.get('listing')
+
+        user = User.objects.get(id=user_id)
+        listing = Listing.objects.get(id=listing_id)
+
+        watchlist, create = Watchlist.objects.get_or_create(user=user, listing=listing)
+        if watchlist:
+            # add error message to say listing is already in watchlist
+            pass
+        return redirect("watchlist")
 
 def watchlist(request):
     watchlist_index = Watchlist.objects.filter(user=request.user.id)
