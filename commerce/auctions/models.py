@@ -27,3 +27,10 @@ class Category(models.Model):
 
     def __str__(self):
         return f"{self.title}"
+
+# default_user = User.objects.filter(id=2)
+# default_listing = Listing.objects.filter(id=1)
+
+class Watchlist(models.Model):
+    user = models.ForeignKey(User, related_name="watchlist", on_delete=models.CASCADE)
+    listing = models.ForeignKey(Listing, related_name="watchlists", on_delete=models.CASCADE)

@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
-from .models import User, Listing, Category
+from .models import User, Listing, Category, Watchlist
 
 def index(request):
     listings = Listing.objects.filter(active='Active')
@@ -83,7 +83,8 @@ def register(request):
 def view_listing(request, listing_id):
     listing = Listing.objects.get(pk=listing_id)
     return render(request, ("auctions/view_listing.html"), {
-        "listing": listing
+        "listing": listing,
+        "user": request.user
     })
 
 def new_listing(request):
@@ -129,4 +130,17 @@ def view_category(request, category_id):
     return render(request, "auctions/view_category.html", {
         "category": category,
         "listings": listings
+    })
+
+def create_watchlist(request):
+    if request.method == 'POST':
+        user = User.objects.get(request.POST.get('user'))
+        listing = Listing.objects.get(request.POST.get('listing'))
+        watchlist = Watchlist.objects.create(user=user, listing=listing)
+        return render(request, "auctions/watchlist.html")
+
+def watchlist(request):
+    watchlist_index = Watchlist.objects.filter(user=request.user.id)
+    return render(request, "auctions/watchlist.html", {
+        "watchlist_index": watchlist_index
     })
