@@ -1,0 +1,15 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+  <h1>{{ listing.title }}</h1>
+  <p>{{ listing.description }}</p>
+  <p>Current Bid: £{{ listing.price}}</p>
+  {% if listing.image %}
+    <div class="img-box">
+      <img src="{{ listing.image }}" alt="{{ listing.title }}">
+    </div>
+  {% endif %}
+
+
+{% endblock %}
