@@ -38,9 +38,12 @@
           <input type="hidden" value="{{ listing.id }}" name="listing">
           <input type="submit" value="Add to Watchlist">
         </form>
+      {% else %}
+        {% if user == listing.price.user %}
+          <p>You have won the bid!</p>
       {% endif %}
       <br>
-
+    {% endif %}
       <div>
       <h3>Add a comment</h3>
         <form action="{% url 'add_comment' %}" method="post">

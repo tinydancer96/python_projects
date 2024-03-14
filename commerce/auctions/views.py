@@ -96,19 +96,24 @@ def new_listing(request):
 
 def create(request):
     if request.method == 'POST':
+
         title = request.POST.get('title')
         description = request.POST.get('description')
         category_name = request.POST.get('category')
         price = request.POST.get('price')
         image = request.POST.get('image')
+        user_id = request.user.id
+        user= User.objects.get(pk=user_id)
+        bid = Bids.objects.create(price=price, user=user)
+
         try:
             category, created = Category.objects.get_or_create(title=category_name)
-            user = request.user
+            # user = request.user
 
             listing = Listing.objects.create(
                 title=title,
                 description=description,
-                price=price,
+                price=bid,
                 user=user,
                 image=image,
                 categories=category
@@ -154,11 +159,13 @@ def create_watchlist(request):
     return render(request, "auctions/view_listing.html")
 
 def watchlist(request):
-    message = request.GET.get('message', None)
+    user = request.user
+    message = request.GET.get('message', "")
     watchlist_index = Watchlist.objects.filter(user=request.user.id)
     return render(request, "auctions/watchlist.html", {
         "watchlist_index": watchlist_index,
-        "message": message
+        "message": message,
+        "user": user
     })
 
 def add_comment(request):
@@ -186,9 +193,10 @@ def make_bid(request):
 
             user = User.objects.get(pk=user_id)
             listing = Listing.objects.get(pk=listing_id)
-            if float(listing.price) < float(price):
-                bid = Bids.objects.create(price=price, user=user, listing=listing)
-                listing.price = bid.price
+
+            if float(listing.price.price) < float(price):
+                bid = Bids.objects.create(price=price, user=user)
+                listing.price = bid
                 listing.save()
                 message = "Bid Successful"
                 return redirect(reverse("view_listing", kwargs={"listing_id":listing_id}) + f"?message={message}")

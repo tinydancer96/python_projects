@@ -5,6 +5,11 @@
   {{ message }}
   {% for watchlist_item in watchlist_index %}
     <a href="{% url 'view_listing' watchlist_item.listing.id %}">
+      <div>
+        {% if user == watchlist_item.listing.price.user %}
+          <p>You have won the bid for {{ watchlist_item.listing.title }}!</p>
+        {% endif %}
+      </div>
       <div class="listing-box">
         <div>
           <h3>{{ watchlist_item.listing.title }}</h3>
