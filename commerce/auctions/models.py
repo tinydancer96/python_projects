@@ -19,6 +19,7 @@ class Listing(models.Model):
     user = models.ForeignKey(User, related_name='listings', on_delete=models.CASCADE)
     image = models.TextField(blank=True)
     active = models.CharField(max_length=10, choices=ListingStatus.choices, default=ListingStatus.ACTIVE)
+
     def __str__(self):
         return f"{self.title}"
 
@@ -34,3 +35,13 @@ class Category(models.Model):
 class Watchlist(models.Model):
     user = models.ForeignKey(User, related_name="watchlist", on_delete=models.CASCADE)
     listing = models.ForeignKey(Listing, related_name="watchlists", on_delete=models.CASCADE)
+
+class Bids(models.Model):
+    user = models.ForeignKey(User, related_name="bids", on_delete=models.CASCADE)
+    listing = models.ForeignKey(Listing, related_name="bids", on_delete=models.CASCADE)
+
+class Comments(models.Model):
+    title = models.CharField(max_length=64)
+    description = models.TextField()
+    user = models.ForeignKey(User, related_name="comments", on_delete=models.CASCADE)
+    listing = models.ForeignKey(Listing, related_name="comments", on_delete=models.CASCADE)

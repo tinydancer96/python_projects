@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
-from .models import User, Listing, Category, Watchlist
+from .models import User, Listing, Category, Watchlist, Bids, Comments
 
 def index(request):
     listings = Listing.objects.filter(active='Active')
@@ -82,9 +82,11 @@ def register(request):
 
 def view_listing(request, listing_id):
     listing = Listing.objects.get(pk=listing_id)
+    comments = Comments.objects.filter(listing=listing)
     return render(request, ("auctions/view_listing.html"), {
         "listing": listing,
-        "user": request.user
+        "user": request.user,
+        "comments": comments
     })
 
 def new_listing(request):
@@ -133,17 +135,21 @@ def view_category(request, category_id):
 
 def create_watchlist(request):
     if request.method == 'POST':
-        user_id = request.POST.get('user')
-        listing_id = request.POST.get('listing')
+        if request.user.is_authenticated:
+            user_id = request.POST.get('user')
+            listing_id = request.POST.get('listing')
 
-        user = User.objects.get(id=user_id)
-        listing = Listing.objects.get(id=listing_id)
+            user = User.objects.get(id=user_id)
+            listing = Listing.objects.get(id=listing_id)
 
-        watchlist, create = Watchlist.objects.get_or_create(user=user, listing=listing)
-        if not create:
-            message = f"{listing.title} is already in watchlist"
-            return redirect(reverse("watchlist") + f"?message={message}")
-        return redirect("watchlist")
+            watchlist, create = Watchlist.objects.get_or_create(user=user, listing=listing)
+            if not create:
+                message = f"{listing.title} is already in watchlist"
+                return redirect(reverse("watchlist") + f"?message={message}")
+            return redirect("watchlist")
+        else:
+            return render(request, "auctions/login.html")
+    return render(request, "auctions/view_listing.html")
 
 def watchlist(request):
     message = request.GET.get('message', None)
@@ -152,3 +158,19 @@ def watchlist(request):
         "watchlist_index": watchlist_index,
         "message": message
     })
+
+def add_comment(request):
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            title = request.POST.get('comment_title')
+            description = request.POST.get('comment_description')
+            user_id = request.POST.get('user_id')
+            listing_id = request.POST.get('listing_id')
+
+            user = User.objects.get(pk=user_id)
+            listing = Listing.objects.get(pk=listing_id)
+            comment = Comments.objects.create(title=title, description=description, user=user, listing=listing)
+            return redirect("view_listing", listing_id)
+        else:
+            return redirect("login")
+    return render(request, "auctions/view_listing.html")

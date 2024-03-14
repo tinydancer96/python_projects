@@ -11,10 +11,7 @@
     </div>
   {% endif %}
 
-  {% if user.is_authenticated %}
     {% if listing.user == user %}
-      <p>edit</p>
-      <p>delete</p>
       <p>close bid</p>
     {% else %}
       <form action="{% url 'create_watchlist' %}" method="post">
@@ -23,10 +20,28 @@
         <input type="hidden" value="{{ listing.id }}" name="listing">
         <input type="submit" value="Add to Watchlist">
       </form>
-    {% endif %}
-  {% else %}
-    <p>login to bid</p>
-  {% endif %}
+      <br>
 
+      <div>
+      <h3>Add a comment</h3>
+        <form action="{% url 'add_comment' %}" method="post">
+          {% csrf_token%}
+          <input type="text" name="comment_title" placeholder="Title">
+          <input type="text" name="comment_description" placeholder="Description">
+          <input type="hidden" value="{{ user.id }}" name="user_id">
+          <input type="hidden" value="{{ listing.id }}" name="listing_id">
+          <input type="submit" value="Post">
+        </form>
+      </div>
+      <br>
+    {% endif%}
+
+  <h3>Comments</h3>
+  {% for comment in comments %}
+    <div>
+      <h4>{{ comment.title }}</h4>
+      <p>{{ comment.description }}</p>
+    </div>
+  {% endfor %}
 
 {% endblock %}
